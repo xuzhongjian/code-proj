@@ -9,12 +9,10 @@ import lombok.Data;
 @Data
 public class User {
     private String userId;
-    private String headIcon;
     private String nickname;
     private String userText;
     private int gender;
     private Byte age;
-    private String birthday;
 
     @Override
     public String toString() {

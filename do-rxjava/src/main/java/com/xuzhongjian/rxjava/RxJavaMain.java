@@ -1,6 +1,7 @@
 package com.xuzhongjian.rxjava;
 
 import com.xuzhongjian.rxjava.model.User;
+import com.xuzhongjian.rxjava.util.GsonUtil;
 import com.xuzhongjian.rxjava.util.MockUserUtil;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -14,11 +15,14 @@ import java.util.List;
  */
 public class RxJavaMain {
     public static void main(String[] args) {
-        RxJavaMain.testString();
+//        RxJavaMain.testString();
+        RxJavaMain.testUser();
     }
 
-    private static void testuser() {
-        List<User> users = MockUserUtil.mockUserList(10);
+    private static List<User> testUser() {
+        List<User> users = MockUserUtil.mockUserList();
+        System.out.println(String.format("user list: %s", GsonUtil.getInstance().toJson(users)));
+        return users;
     }
 
     private static void testString() {
@@ -32,5 +36,10 @@ public class RxJavaMain {
                 .zipWith(Observable.range(1, Integer.MAX_VALUE),
                         (string, count) -> String.format("%2d. %s", count, string))
                 .subscribe(System.out::println);
+    }
+
+    public Observable<User> listUser() {
+        List<User> users = MockUserUtil.mockUserList();
+        return Observable.fromIterable(users);
     }
 }

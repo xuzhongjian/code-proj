@@ -1,5 +1,6 @@
 package com.xuzhongjian.rxjava.util;
 
+import com.google.gson.reflect.TypeToken;
 import com.xuzhongjian.rxjava.model.User;
 
 import java.util.List;
@@ -9,7 +10,9 @@ import java.util.List;
  */
 public class MockUserUtil {
 
-    public static List<User> mockUserList(int length) {
-        return null;
+    public static List<User> mockUserList() {
+        String fileAsString = FileUtil.getFileAsString("/Users/zjxu97/Github/learning-proj/do-rxjava/src/main/resources/users.json");
+        return GsonUtil.getInstance().fromJson(fileAsString, new TypeToken<List<User>>() {
+        }.getType());
     }
 }
