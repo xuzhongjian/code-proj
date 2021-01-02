@@ -10,6 +10,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>do-rxjava</module>
+        <module>do-common</module>
+        <module>do-thread</module>
     </modules>
 
     <dependencies>
