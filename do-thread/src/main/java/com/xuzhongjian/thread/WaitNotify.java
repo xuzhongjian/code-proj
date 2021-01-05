@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
  * @author zjxu97 at 1/5/21 12:17 AM
  */
 public class WaitNotify {
-    static boolean flag = true;
-    static Object lock = new Object();
+    private static final Object lock = new Object();
+    private static Boolean flag = true;
 
     public static void main(String[] args) throws Exception {
         Thread waitThread = new Thread(new Wait(), "WaitThread");
@@ -29,6 +29,7 @@ public class WaitNotify {
                         System.out.println(Thread.currentThread() + " flag is true. wait @ " + new SimpleDateFormat(" HH:mm:ss ").format(new Date()));
                         lock.wait();
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
                 // 条件满足时，完成工作
