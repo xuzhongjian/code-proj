@@ -1,15 +1,14 @@
 package com.xuzhongjian;
 
-import net.sf.json.JSONObject;
+import java.util.Collection;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author zjxu97 at 12/25/20 11:20 AM
  */
 public class Main {
     public static void main(String[] args) {
-        String bizExt = "{}";
-        JSONObject resultJson = JSONObject.fromObject(bizExt);
-        String articleId = resultJson.optString("articleId");
-        System.out.println(articleId);
+        ExecutorService executorService =  ExecutorService;
+
     }
 }
