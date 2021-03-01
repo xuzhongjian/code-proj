@@ -1,5 +1,7 @@
 package com.xuzhongjian.design.observe;
 
+import java.util.Random;
+
 /**
  * @author zjxu97 at 3/1/21 5:20 PM
  */
