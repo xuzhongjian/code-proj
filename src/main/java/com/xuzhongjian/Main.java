@@ -5,10 +5,6 @@ package com.xuzhongjian;
  */
 public class Main {
     public static void main(String[] args) {
-        try {
-            System.out.println(Class.forName("xuzhongjian"));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        System.out.println("hello world!");
     }
 }

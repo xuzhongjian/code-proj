@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * wait、notify模型
+ *
  * @author zjxu97 at 1/5/21 12:17 AM
  */
 public class WaitNotify {

@@ -1,4 +1,4 @@
-package com.xuzhongjian.thread.model;
+package com.xuzhongjian.thread;
 
 import java.util.concurrent.FutureTask;
 

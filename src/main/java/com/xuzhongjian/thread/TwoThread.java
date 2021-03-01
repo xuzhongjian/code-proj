@@ -1,6 +1,8 @@
 package com.xuzhongjian.thread;
 
 /**
+ * 两个线程交替打印
+ *
  * @author zjxu97 at 1/5/21 8:17 PM
  */
 public class TwoThread {

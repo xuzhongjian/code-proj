@@ -1,6 +1,8 @@
 package com.xuzhongjian.thread;
 
 /**
+ * 三个线程交替打印数字
+ *
  * @author zjxu97 at 1/5/21 8:48 PM
  */
 public class ThreeThread {
