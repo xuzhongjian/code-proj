@@ -5,14 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.xuzhongjian</groupId>
-    <artifactId>learning-proj</artifactId>
+    <artifactId>code-proj</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>do-rxjava</module>
-        <module>do-common</module>
-        <module>do-thread</module>
-    </modules>
 
     <dependencies>
         <dependency>
