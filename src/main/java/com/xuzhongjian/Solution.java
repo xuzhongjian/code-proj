@@ -1,7 +1,6 @@
 package com.xuzhongjian;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -11,32 +10,55 @@ public class Solution {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] nums = {1, 2, 3};
-        List<List<Integer>> subsets = solution.subsets(nums);
-
+        int[] nums = {1, 0, -1, 0, -2, 2};
+        System.out.println(solution.fourSum(nums, 0));
     }
 
-    public List<List<Integer>> subsets(int[] nums) {
+    public List<List<Integer>> fourSum(int[] numsArray, int target) {
+        List<Integer> nums = new ArrayList<>();
+        for (Integer num : numsArray) {
+            nums.add(num);
+        }
+
+        List<Integer> subRes = new ArrayList<>();
         List<List<Integer>> res = new ArrayList<>();
-        LinkedList<Integer> subRes = new LinkedList<>();
-
-        dfs(nums, 0, res, subRes);
-
+        dfs(nums, 0, 4, subRes, res, target);
+        for (List<Integer> list : res) {
+            list.sort((o1, o2) -> o1 - o2);
+        }
         return res;
     }
 
-    public void dfs(int[] nums, int index, List<List<Integer>> res, LinkedList<Integer> subRes) {
-        if (index == nums.length) {
-            res.add(new ArrayList<>(subRes));
+    /**
+     * @param nums   数据底
+     * @param i      当前的index
+     * @param length 目标长度
+     * @param subRes 单个答案
+     * @param res    整体答案
+     */
+    public void dfs(List<Integer> nums, int i, int length, List<Integer> subRes, List<List<Integer>> res, int target) {
+        if (i == nums.size()) {
+            if (subRes.size() == length) {
+                if (sumCollection(subRes) == target) {
+                    res.add(new ArrayList<>(subRes));
+                }
+            }
             return;
         }
+        // 不选择当前
+        dfs(nums, i + 1, length, subRes, res, target);
 
-        // 不选择 index 对应的当前位置
-        dfs(nums, index + 1, res, subRes);
+        // 选择当前
+        subRes.add(nums.get(i));
+        dfs(nums, i + 1, length, subRes, res, target);
+        subRes.remove(subRes.size() - 1);
+    }
 
-        // 选择当前位置
-        subRes.addLast(nums[index]);
-        dfs(nums, index + 1, res, subRes);
-        subRes.removeLast();
+    public int sumCollection(List<Integer> nums) {
+        int sum = 0;
+        for (Integer num : nums) {
+            sum += num;
+        }
+        return sum;
     }
 }
