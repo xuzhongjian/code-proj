@@ -1,6 +1,7 @@
 package com.xuzhongjian;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -10,55 +11,62 @@ public class Solution {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] nums = {1, 0, -1, 0, -2, 2};
-        System.out.println(solution.fourSum(nums, 0));
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("leet");
+        strings.add("code");
+        solution.wordBreak("leetcode", strings);
     }
 
-    public List<List<Integer>> fourSum(int[] numsArray, int target) {
-        List<Integer> nums = new ArrayList<>();
-        for (Integer num : numsArray) {
-            nums.add(num);
+
+    private boolean[] dp;
+    private HashSet<String> set = new HashSet<>();
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        // 1. 将字典放入一个hashSet中，并且计算出字典中最长和最短的单词
+        dp = new boolean[s.length()];
+        int minLength = Integer.MAX_VALUE;
+        int maxLength = Integer.MIN_VALUE;
+        for (String ss : wordDict) {
+            set.add(ss);
+            minLength = Math.min(minLength, ss.length());
+            maxLength = Math.max(maxLength, ss.length());
         }
 
-        List<Integer> subRes = new ArrayList<>();
-        List<List<Integer>> res = new ArrayList<>();
-        dfs(nums, 0, 4, subRes, res, target);
-        for (List<Integer> list : res) {
-            list.sort((o1, o2) -> o1 - o2);
+        for (int i = 0; i < s.length(); i++) {
+            dp[i] = dpFunc(s, minLength, maxLength, i);
         }
-        return res;
+        return dp[s.length() - 1];
     }
 
     /**
-     * @param nums   数据底
-     * @param i      当前的index
-     * @param length 目标长度
-     * @param subRes 单个答案
-     * @param res    整体答案
+     * dp，计算对应的位置是否可以由字典组成
+     *
+     * @param s              源字符
+     * @param dictRangeStart 字典最短的字符 [1,++)
+     * @param dictRangeEnd   字典最长的字符 [1,++)
+     * @param index          计算从s.(0) 到s.(index) 能否用字典完成 [0,length-1)
+     * @return boolean
      */
-    public void dfs(List<Integer> nums, int i, int length, List<Integer> subRes, List<List<Integer>> res, int target) {
-        if (i == nums.size()) {
-            if (subRes.size() == length) {
-                if (sumCollection(subRes) == target) {
-                    res.add(new ArrayList<>(subRes));
-                }
+    public boolean dpFunc(String s, int dictRangeStart, int dictRangeEnd, int index) {
+
+
+        /**
+         * 按照字典的长度开始遍历，截取s.(index)前字典长度个字符，判断在不在字典中
+         * 在：s.(0) 到s.(index) 可以由字典完成
+         * 不在：不能有字典完成
+         */
+        for (int i = dictRangeStart; i < dictRangeEnd + 1; i++) {
+            // 单词匹配的起点
+            int matchStart = index - i + 1;
+            if (matchStart < 0 || (matchStart != 0 && !dp[matchStart - 1])) {
+                continue;
             }
-            return;
-        }
-        // 不选择当前
-        dfs(nums, i + 1, length, subRes, res, target);
 
-        // 选择当前
-        subRes.add(nums.get(i));
-        dfs(nums, i + 1, length, subRes, res, target);
-        subRes.remove(subRes.size() - 1);
-    }
-
-    public int sumCollection(List<Integer> nums) {
-        int sum = 0;
-        for (Integer num : nums) {
-            sum += num;
+            String substring = s.substring(matchStart, matchStart + i);
+            if (set.contains(substring)) {
+                return true;
+            }
         }
-        return sum;
+        return false;
     }
 }
