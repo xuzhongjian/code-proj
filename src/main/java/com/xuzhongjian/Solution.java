@@ -1,72 +1,66 @@
 package com.xuzhongjian;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 /**
+ * 淘汰小孩
+ *
  * @author zjxu97 at 3/2/21 11:09 AM
  */
 public class Solution {
-
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("leet");
-        strings.add("code");
-        solution.wordBreak("leetcode", strings);
+        int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        ListNode node = build(nums);
+        int size = nums.length;
+        int k = 3;
+        int count = 1;
+        ListNode prev = null;
+        while (size > k) {
+            while (count < k) {
+                count++;
+                prev = node;
+                node = node.next;
+            }
+            size--;
+            System.out.println(node.val);
+            prev.next = node.next;
+            node.next = null;
+            node = prev.next;
+            count = 1;
+        }
     }
 
-
-    private boolean[] dp;
-    private HashSet<String> set = new HashSet<>();
-
-    public boolean wordBreak(String s, List<String> wordDict) {
-        // 1. 将字典放入一个hashSet中，并且计算出字典中最长和最短的单词
-        dp = new boolean[s.length()];
-        int minLength = Integer.MAX_VALUE;
-        int maxLength = Integer.MIN_VALUE;
-        for (String ss : wordDict) {
-            set.add(ss);
-            minLength = Math.min(minLength, ss.length());
-            maxLength = Math.max(maxLength, ss.length());
+    public static ListNode build(int[] nums) {
+        ListNode res = null;
+        ListNode cur = null;
+        for (int i = 0; i < nums.length; i++) {
+            ListNode n = new ListNode(nums[i]);
+            if (res == null) {
+                res = n;
+                cur = n;
+            }
+            cur.next = n;
+            cur = cur.next;
+            if (i == nums.length - 1) {
+                cur.next = res;
+            }
         }
+        return res;
+    }
+}
 
-        for (int i = 0; i < s.length(); i++) {
-            dp[i] = dpFunc(s, minLength, maxLength, i);
-        }
-        return dp[s.length() - 1];
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {
     }
 
-    /**
-     * dp，计算对应的位置是否可以由字典组成
-     *
-     * @param s              源字符
-     * @param dictRangeStart 字典最短的字符 [1,++)
-     * @param dictRangeEnd   字典最长的字符 [1,++)
-     * @param index          计算从s.(0) 到s.(index) 能否用字典完成 [0,length-1)
-     * @return boolean
-     */
-    public boolean dpFunc(String s, int dictRangeStart, int dictRangeEnd, int index) {
+    ListNode(int val) {
+        this.val = val;
+    }
 
-
-        /**
-         * 按照字典的长度开始遍历，截取s.(index)前字典长度个字符，判断在不在字典中
-         * 在：s.(0) 到s.(index) 可以由字典完成
-         * 不在：不能有字典完成
-         */
-        for (int i = dictRangeStart; i < dictRangeEnd + 1; i++) {
-            // 单词匹配的起点
-            int matchStart = index - i + 1;
-            if (matchStart < 0 || (matchStart != 0 && !dp[matchStart - 1])) {
-                continue;
-            }
-
-            String substring = s.substring(matchStart, matchStart + i);
-            if (set.contains(substring)) {
-                return true;
-            }
-        }
-        return false;
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
     }
 }
