@@ -1,66 +1,77 @@
 package com.xuzhongjian;
 
+import java.util.Random;
+import java.util.UUID;
+
 /**
- * 淘汰小孩
- *
  * @author zjxu97 at 3/2/21 11:09 AM
  */
 public class Solution {
+
+    private RedisOperation redis = new RedisOperation();
+    private static final String KEY = "redis-lock-key";
+
     public static void main(String[] args) {
-        int[] nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-        ListNode node = build(nums);
-        int size = nums.length;
-        int k = 3;
-        int count = 1;
-        ListNode prev = null;
-        while (size > k) {
-            while (count < k) {
-                count++;
-                prev = node;
-                node = node.next;
+        Solution solution = new Solution();
+        UUID uuid = UUID.randomUUID();
+        String token = uuid.toString();
+        try {
+            if (solution.getRedisLock(token, 1000)) {
+                System.out.println("hello world!");
             }
-            size--;
-            System.out.println(node.val);
-            prev.next = node.next;
-            node.next = null;
-            node = prev.next;
-            count = 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            solution.releaseLock(token);
         }
+
     }
 
-    public static ListNode build(int[] nums) {
-        ListNode res = null;
-        ListNode cur = null;
-        for (int i = 0; i < nums.length; i++) {
-            ListNode n = new ListNode(nums[i]);
-            if (res == null) {
-                res = n;
-                cur = n;
-            }
-            cur.next = n;
-            cur = cur.next;
-            if (i == nums.length - 1) {
-                cur.next = res;
-            }
+    /**
+     * 获取锁
+     *
+     * @param token   每个线程唯一的token
+     * @param timeout 最大等待时间
+     * @return 获取锁成功与否
+     * @throws InterruptedException 中断异常
+     */
+    public boolean getRedisLock(String token, long timeout) throws InterruptedException {
+        boolean success = false;
+        long ts = System.currentTimeMillis();
+        while (!success && System.currentTimeMillis() - ts < timeout) {
+            success = redis.setnx(KEY, token);
+            Thread.sleep(2);
         }
-        return res;
+        return success;
+    }
+
+    /**
+     * 释放锁
+     *
+     * @param token 和获取锁的时候一样，需要一个唯一的token来解锁，只有当唯一的token匹配上了，才能解锁。
+     */
+    public void releaseLock(String token) {
+        String s = redis.get(KEY);
+        if (token.equals(s)) {
+            redis.del(KEY);
+        }
     }
 }
 
+class RedisOperation {
 
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode() {
+    public RedisOperation() {
     }
 
-    ListNode(int val) {
-        this.val = val;
+    public boolean setnx(String key, String value) {
+        return new Random().nextInt() % 2 == 0;
     }
 
-    ListNode(int val, ListNode next) {
-        this.val = val;
-        this.next = next;
+    public String get(String key) {
+        return "";
+    }
+
+    public boolean del(String key) {
+        return new Random().nextInt() % 2 == 0;
     }
 }
