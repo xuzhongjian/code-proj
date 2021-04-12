@@ -1,7 +1,6 @@
 package com.xuzhongjian;
 
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * @author zjxu97 at 3/2/21 11:09 AM
@@ -12,19 +11,31 @@ public class Solution {
     private static final String KEY = "redis-lock-key";
 
     public static void main(String[] args) {
+        int[] nums = {0, 0, 1, 1, 1, 1, 2, 3, 3};
         Solution solution = new Solution();
-        UUID uuid = UUID.randomUUID();
-        String token = uuid.toString();
-        try {
-            if (solution.getRedisLock(token, 1000)) {
-                System.out.println("hello world!");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            solution.releaseLock(token);
-        }
+        System.out.println(solution.removeDuplicates(nums));
 
+
+    }
+
+    public int removeDuplicates(int[] nums) {
+        int index = 1;
+        int curLength = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[i - 1]) {
+                nums[index] = nums[i];
+                curLength = 1;
+                index++;
+            } else {
+                if (curLength < 2) {
+                    System.out.println(nums[i] + " " + curLength);
+                    nums[index] = nums[i];
+                    curLength++;
+                    index++;
+                }
+            }
+        }
+        return index;
     }
 
     /**
