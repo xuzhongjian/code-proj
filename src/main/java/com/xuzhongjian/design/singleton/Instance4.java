@@ -8,13 +8,13 @@ import java.util.Objects;
  * @author zjxu97 at 3/1/21 4:54 PM
  */
 public class Instance4 {
-    private Instance4 instance = null;
+    private static Instance4 instance = null;
 
     private Instance4() {
 
     }
 
-    public synchronized Instance4 getInstance() {
+    public synchronized static Instance4 getInstance() {
         if (Objects.isNull(instance)) {
             instance = new Instance4();
         }

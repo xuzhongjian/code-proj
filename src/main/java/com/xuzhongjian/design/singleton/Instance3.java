@@ -15,7 +15,7 @@ public class Instance3 {
 
     }
 
-    public Instance3 getInstance() {
+    public static Instance3 getInstance() {
         if (Objects.isNull(instance)) {
             instance = new Instance3();
         }

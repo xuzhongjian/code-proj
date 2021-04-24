@@ -1,36 +1,29 @@
 package com.xuzhongjian;
 
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zjxu97 at 12/25/20 11:20 AM
  */
 public class Main {
     public static void main(String[] args) {
-        new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("log");
-            }
-        }).start();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("main out");
-
-        PriorityQueue<Map.Entry<String, Integer>> queue = new PriorityQueue<>((e1, e2) -> Integer.compare(e1.getValue(), e2.getValue()));
+        Main main = new Main();
+        List<Integer> list = main.grayCode(10);
+        System.out.println(">>>" + (1 >> 1));
+        System.out.println("^ : " + (2 ^ 3));
     }
 
 
-
+    public List<Integer> grayCode(int n) {
+        List<Integer> gray = new ArrayList<Integer>();
+        for (int binary = 0; binary < 1 << n; binary++) {
+            int e = binary ^ binary >> 1;
+            System.out.println(e);
+            gray.add(e);
+        }
+        return gray;
+    }
 
 
 
